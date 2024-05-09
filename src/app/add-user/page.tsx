@@ -44,7 +44,7 @@ export default function AddEditUser() {
         if (!response.ok) {
           throw new Error("Failed to create user");
         }
-        router.push("/dashboard");
+        router.push("/");
         setName("");
       }
     } catch (error) {
@@ -71,15 +71,25 @@ export default function AddEditUser() {
           Save
         </button>{" "}
         &nbsp;
-        <Link href="/dashboard">
+        <Link href="/">
           <button className="theme-button">Cancel</button>
         </Link>
       </form>
 
-      <div>
-        <button className="theme-button"> View P5 Balance</button>
-        <button className="theme-button"> View Reward Balance</button>
-      </div>
+      {edit ? (
+        <div className="mt-20">
+          <Link href={`/p5?id=${id}`}>
+            <button className="theme-button"> View P5 Balance</button> &nbsp;
+          </Link>
+
+          <Link href={`/reward?id=${id}`}>
+            <button className="theme-button"> View Reward Balance</button>{" "}
+            &nbsp;
+          </Link>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
