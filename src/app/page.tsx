@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { User } from "./lib/constant";
 
-export default function Dashboard() { 
+export default function Dashboard() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -63,7 +63,7 @@ export default function Dashboard() {
                     <Link
                       href={`/add-user/?id=${user._id}&name=${
                         user.name
-                      }&edit=${true}`}
+                      }&edit=${true}&p5Balance=${user.p5Balance}`}
                     >
                       Login
                     </Link>

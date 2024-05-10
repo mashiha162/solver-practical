@@ -8,6 +8,7 @@ export default function AddEditUser() {
   const edit = searchParams.get("edit");
   const id = searchParams.get("id");
   const userName = searchParams.get("name");
+  const p5Balance = searchParams.get("p5Balance");
 
   const [name, setName] = useState(userName ? userName : "");
 
@@ -31,13 +32,15 @@ export default function AddEditUser() {
           alert("Edit Successfull");
         }
       } else {
+        const p5Balance = 100;
+        const rewardBalance = 0;
         // Send a POST request to the API endpoint
         const response = await fetch("/api/add-user", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name }),
+          body: JSON.stringify({ name, p5Balance, rewardBalance }),
         });
 
         // Check if the response is OK
@@ -78,7 +81,7 @@ export default function AddEditUser() {
 
       {edit ? (
         <div className="mt-20">
-          <Link href={`/p5?id=${id}`}>
+          <Link href={`/p5?id=${id}&p5Balance=${p5Balance}`}>
             <button className="theme-button"> View P5 Balance</button> &nbsp;
           </Link>
 

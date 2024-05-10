@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import {  useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { User } from "../lib/constant";
 
 export default function CreateReward() {
   const searchParams = useSearchParams();
-  const edit = searchParams.get("edit");
   const id = searchParams.get("id");
   const userName = searchParams.get("name");
 
@@ -14,57 +13,46 @@ export default function CreateReward() {
 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const currentUserId = "h";
+  const currentUserId = id;
 
-  const [selectedUser, setSelectedUser] = useState("");
 
   const [reward, setReward] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      if (edit) {
-        const response = await fetch("/api/users", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id, name }),
-        });
+      // Send a POST request to the API endpoint
+      const dateTime = Date.now();
+      const givenBy = id;
+      const givenTo = name;
+      const response = await fetch("/api/create-reward", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ dateTime, reward, givenBy, givenTo }),
+      });
 
-        if (!response.ok) {
-          throw new Error("Failed to create user");
-        } else {
-          alert("Edit Successfull");
-        }
-      } else {
-        // Send a POST request to the API endpoint
-        const response = await fetch("/api/add-user", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name }),
-        });
-
-        // Check if the response is OK
-        if (!response.ok) {
-          throw new Error("Failed to create user");
-        }
-        router.push("/");
-        setName("");
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error("Failed to create reward");
       }
+      // router.push("/");
+      alert("Sucess");
+      setName("");
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creating reward:", error);
       alert("Something went wrong");
     }
   };
 
   const handleChange = (e: any) => {
+    console.log("ee",e.target.value);
+    
     setName(e.target.value);
   };
+
 
   const fetchUserData = async () => {
     try {
@@ -99,19 +87,17 @@ export default function CreateReward() {
     }
   };
 
+  const filteredUsers = users.filter((user) => user._id !== currentUserId);
+
   return (
     <div className="center">
-      <h1>{edit ? "Edit" : "Create New"} User</h1>
+      <h1>Create New Reward</h1>
       <form onSubmit={handleSubmit} className="mt-20">
         <label>
           Select User:
-          <select value={selectedUser} onChange={handleChange}>
-            {users.map((user) => (
-              <option
-                key={user._id}
-                value={user._id}
-                disabled={user._id === currentUserId}
-              >
+          <select value={name} onChange={handleChange}>
+            {filteredUsers.map((user) => (
+              <option key={user._id} value={user._id}>
                 {user.name}
               </option>
             ))}
