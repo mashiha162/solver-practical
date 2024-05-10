@@ -9,6 +9,7 @@ export default function AddEditUser() {
   const id = searchParams.get("id");
   const userName = searchParams.get("name");
   const p5Balance = searchParams.get("p5Balance");
+  const rewardBalance = searchParams.get("rewardBalance");
 
   const [name, setName] = useState(userName ? userName : "");
 
@@ -81,11 +82,13 @@ export default function AddEditUser() {
 
       {edit ? (
         <div className="mt-20">
-          <Link href={`/p5?id=${id}&p5Balance=${p5Balance}`}>
+          <Link href={`/p5-reward?id=${id}&p5Balance=${p5Balance}`}>
             <button className="theme-button"> View P5 Balance</button> &nbsp;
           </Link>
 
-          <Link href={`/reward?id=${id}`}>
+          <Link
+            href={`/p5-reward?id=${id}&rewardBalance=${rewardBalance}&showRewardData=${true}`}
+          >
             <button className="theme-button"> View Reward Balance</button>{" "}
             &nbsp;
           </Link>

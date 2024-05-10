@@ -63,7 +63,7 @@ export default function Dashboard() {
                     <Link
                       href={`/add-user/?id=${user._id}&name=${
                         user.name
-                      }&edit=${true}&p5Balance=${user.p5Balance}`}
+                      }&edit=${true}&p5Balance=${user.p5Balance}&rewardBalance=${user.rewardBalance}`}
                     >
                       Login
                     </Link>

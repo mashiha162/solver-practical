@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "../lib/constant";
 
 export default function page() {
@@ -11,6 +11,34 @@ export default function page() {
   const id = searchParams.get("id");
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/getp5-history", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      }); 
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const data: User[] = await response.json();
+      console.log("Fetched users:", data);
+      setUsers(data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   return (
     <div className="center">
